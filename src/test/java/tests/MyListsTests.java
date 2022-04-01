@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
@@ -7,11 +9,12 @@ import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
-
+@Epic(value = "Tests for list")
 public class MyListsTests extends CoreTestCase {
     public static final String
             name_of_folder = "Learning programming",
@@ -19,6 +22,11 @@ public class MyListsTests extends CoreTestCase {
             password = "Skalnenkov898989!";
 
     @Test
+    @Features(value = {@Feature(value="List"), @Feature(value="Article")})
+    @DisplayName("Save first article to the favorite list")
+    @Description("We save firsta article to the favorite list")
+    @Step("Starting test testSaveFirstArticleToMyList")
+    @Severity(value=SeverityLevel.NORMAL)
     public void testSaveFirstArticleToMyList()
     {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -43,7 +51,7 @@ public class MyListsTests extends CoreTestCase {
             Auth.submitForm();
 
             ArticlePageObject.waitForTitleElement();
-            assertEquals("We are not on the same page after login.",
+            Assert.assertEquals("We are not on the same page after login.",
                     article_title,
                     ArticlePageObject.getArticleTitle()
             );
@@ -65,6 +73,11 @@ public class MyListsTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value = {@Feature(value="List"), @Feature(value="Article")})
+    @DisplayName("Save two articles to the favorite list and delete the first one")
+    @Description("We save  two articles to the favorite list and delete the first one")
+    @Step("Starting test testSaveTwoArticlesToMyListAndDeleteFirst")
+    @Severity(value=SeverityLevel.NORMAL)
     public void testSaveTwoArticlesToMyListAndDeleteFirst() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
@@ -88,7 +101,7 @@ public class MyListsTests extends CoreTestCase {
             Auth.enterLoginData(login, password);
             Auth.submitForm();
             ArticlePageObject.waitForTitleElement();
-            assertEquals("We are not on the same page after login.",
+            Assert.assertEquals("We are not on the same page after login.",
                     article_title,
                     ArticlePageObject.getArticleTitle()
             );
@@ -110,9 +123,9 @@ public class MyListsTests extends CoreTestCase {
 
         MyListsPageObject.swipeByArticleToDelete(article_title);
 
-        assertFalse(MyListsPageObject.ifHrefExistInWebElementList("wiki/Java_(programming_language)", MyListsPageObject.getListOfElements()));
+        Assert.assertFalse(MyListsPageObject.ifHrefExistInWebElementList("wiki/Java_(programming_language)", MyListsPageObject.getListOfElements()));
 
-        assertTrue(MyListsPageObject.ifHrefExistInWebElementList("wiki/Conga", MyListsPageObject.getListOfElements()));
+        Assert.assertTrue(MyListsPageObject.ifHrefExistInWebElementList("wiki/Conga", MyListsPageObject.getListOfElements()));
     }
 }
 
